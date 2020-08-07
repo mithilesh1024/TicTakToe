@@ -1,8 +1,8 @@
 $(document).ready(() => {
-  
-    isO = true;
-    isX = false;
-    winner = false;
+  isO = true;
+  isX = false;
+  winner = false;
+  win = "";
 
   $("#1").text("");
   $("#2").text(" ");
@@ -16,16 +16,19 @@ $(document).ready(() => {
   $(".reset").hide();
 
   $(".box").one("click", () => {
-    playing();
     ontap(event.target.id);
-    checkWinner();
-    if(winner === true) {
-        $(".winner").text("WINNER");
-        $(".reset").show();    
-        $(".reset").click(() => {
-            location.reload(true);
-        });
+    if( winner == false) {
+      playing();
+      checkWinner();
     }
+    if (winner == true) {
+      $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+      $(".winner").text("WINNER " + win);
+      $(".reset").show();
+      $(".reset").click(() => {
+        location.reload(true);
+      });
+    } 
   });
 
   function checkWinner() {
@@ -41,39 +44,39 @@ $(document).ready(() => {
 
     //Rows
     if (cell1 === cell2 && cell2 === cell3) {
-      console.log("condition 1");
+      win = cell1;
       winner = true;
     } else if (cell4 === cell5 && cell5 === cell6) {
-      console.log("condition 2");
+      win = cell4;
       winner = true;
     } else if (cell7 === cell8 && cell8 === cell9) {
-      console.log("condition 3");
+      win = cell7;
       winner = true;
     }
     //Columns
     if (cell1 === cell4 && cell4 === cell7) {
-      console.log("condition 4");
+      win = cell1;
       winner = true;
     } else if (cell2 === cell5 && cell5 === cell8) {
-      console.log("condition 5");
+      win = cell2;
       winner = true;
     } else if (cell3 === cell6 && cell6 === cell9) {
-      console.log("condition 6");
+      win = cell3;
       winner = true;
     }
     //Diagonals
     if (cell1 === cell5 && cell5 === cell9) {
-      console.log("condition 7");
+      win = cell1;
       winner = true;
     } else if (cell7 === cell5 && cell5 === cell3) {
-      console.log("condition 8");
+      win = cell7;
       winner = true;
     }
   }
 
   function ontap(elementID) {
     if (isX) {
-      if (winner === false){
+      if(winner === false){
         $("#" + elementID).text("X");
       }
       isO = true;
@@ -81,7 +84,7 @@ $(document).ready(() => {
       return;
     }
     if (isO) {
-      if (winner === false){
+      if(winner === false){
         $("#" + elementID).text("O");
       }
       isX = true;
